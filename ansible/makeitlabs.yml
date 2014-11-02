@@ -1,0 +1,33 @@
+---
+- hosts: all
+  remote_user: pi
+  tasks:
+  - name: ensure that vim exists on all systems
+    apt: name=vim state=latest
+- hosts: auth_servers
+  vars:
+    http_port: 80
+    max_clients: 200
+  tasks:
+  # Run the equivalent of "apt-get update" as a separate step
+  - name: update package sources
+    apt: update_cache=yes
+  - name: ensure slapd is at the latest version
+    apt: name=slapd state=latest
+  - name: write the slapd config file (WIP)
+    template: src=/srv/slapd.j2 dest=/etc/slapd.conf
+    notify:
+    - restart slapd
+  - name: ensure nginx is the latest version
+    apt: name=slapd
+  - name: ensure nginx is running
+    service: name=nginx state=started
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
+
+# Other setup tasks
+#dpkg-reconfigure slapd #allow multiusers
+#vim /etc/phpldapadmin/config.php
+#vim /etc/phpldapadmin/config.php
+#vim /etc/nginx/sites-available/default

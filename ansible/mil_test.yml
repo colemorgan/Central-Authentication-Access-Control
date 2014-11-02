@@ -1,0 +1,6 @@
+---
+- hosts: all
+  remote_user: pi
+  tasks:
+  - name: ensure that vim exists on all systems
+    apt: name=vim state=latest
