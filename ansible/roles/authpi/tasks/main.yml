@@ -1,0 +1,4 @@
+---
+
+- name: delete mail server
+  command: tasksel remove mail

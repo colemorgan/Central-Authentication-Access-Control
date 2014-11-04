@@ -4,5 +4,21 @@ ansible_shell_type=bash
 ansible_ssh_user=pi
 sudo_user=pi
 
-[auth_servers]
-10.100.0.46
+[rpi:children]
+authpi
+dbpi
+webpi
+monitorpi
+
+[authpi]
+10.100.0.150
+10.100.0.151
+
+[webpi]
+10.100.0.153
+
+[dbpi]
+10.100.0.154
+
+[monitorpi]
+10.100.0.155

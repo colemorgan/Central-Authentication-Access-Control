@@ -1,0 +1,95 @@
+---
+# This playbook deploys the whole infrastructure stack in this site.  
+
+- name: apply common configuration to all nodes
+  hosts: rpi
+  remote_user: pi
+
+  roles:
+    - common
+
+- name: configure and deploy the webservers and application code
+  hosts: webservers
+  remote_user: pi
+
+  roles:
+    - webpi
+
+- name: deploy MySQL and configure the databases
+  hosts: dbservers
+  remote_user: pi
+
+  roles:
+    - db
+
+
+- name: ldap | Store previous run data
+  file: path=$ldap_done_dir state=directory owner=pi group=pi
+  tags: 
+    - ldap
+    - auth
+
+- name: ldap | install ldap packages
+  apt: pkg=$item state=installed
+  with_items:
+    - slapd
+    - ldap-utils
+    - ldapscripts
+  tags: 
+    - ldap
+    - auth
+    - apt
+
+- name: Have we configured slapd before?
+  shell: "[ -f $ldap_slapd_dpkg_reconfigure_done ] && echo 'found' || echo ''"
+  register: ldap_slapd_already_configured 
+
+- name: ldap | Configure slapd
+  dpkg_reconfigure: 
+    pkg: slapd 
+    answers:
+      slapd/internal/generated_adminpw: MakeIt.1
+      slapd/password2: $ldap_password 
+      slapd/password1: $ldap_password 
+      slapd/allow_ldap_v2: false
+      shared/organization: $ldap_host 
+      slapd/no_configuration: false
+      slapd/move_old_database: true 
+      slapd/dump_database_destdir: /var/backups/slapd-VERSION
+      slapd/purge_database: false
+      slapd/domain: $ldap_host
+      slapd/backend: HDB
+      slapd/dump_database: when needed
+  when: ldap_slapd_already_configured.stdout.find('found') == -1
+
+- name: ldap | Ugly hack to make sure the slapd reconfigure does not get run more than once
+  shell: touch $ldap_slapd_dpkg_reconfigure_done creates=$ldap_slapd_dpkg_reconfigure_done
+  tags: 
+    - ldap
+    - auth
+
+- include: load-schema.yml
+
+- name: ldap | ensure ldapscripts.conf exists
+  template: src=root/etc/ldapscripts/ldapscripts.conf.j2 dest=/etc/ldapscripts/ldapscripts.conf owner=makeitlabs group=makeitlabs
+  tags: 
+    - ldap
+    - auth
+
+- name: ldap | Install add user template
+  template: src=root/etc/ldapscripts/ldapadduser.template.j2 dest=/etc/ldapscripts/ldapadduser.template owner=makeitlabs group=makeitlabs
+  tags: 
+    - ldap
+    - auth
+
+- name: ldap | ensure ldap.secret exists
+  template: src=root/etc/ldap.secret.j2 dest=/etc/ldap.secret owner=makeitlabs group=makeitlabs mode=0400
+  tags: 
+    - ldap
+    - auth
+
+# This is really goofy but editing the secrets file in vims leaves an extra space at the end. Not sure what all editors do this
+# If your editor does not do this then this command will mess up your file.
+- name: ldap | ensure ldap.secret has no trailing space
+  command: truncate --size $ldap_password_size /etc/ldap.secret
+

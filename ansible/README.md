@@ -3,16 +3,16 @@
 Ansible is an automation library written in Python. Its only requirement on the client-side is Python 2.5
 This configuration should be able to populate our auth environment by modifying just the inventory file, then running:
 
-ansible-playbook ./openldap.yml -i inventory
+ansible-playbook ./rpi.yml -i inventory
 
 # Getting Started
 Two core files must exist:
 1. inventory
-2. playbook.yml
+2. rpi.yml
 
 ## Server prerequisites (the machine you physically use)
 ```
-sudo apt-get install ansible python
+sudo apt-get install ansible python git
 ```
 
 ## Client prerequisites (the machine you are trying to manage remotely)
@@ -56,3 +56,9 @@ ssh-copy-id pi@10.100.0.46
 ```
 
 Documentation on Ansible playbooks/inventory files can be found here <http://docs.ansible.com/>
+
+# TODO
+1. Build in fstab entries for automatic filesystem mounts (nfs/webdav/etc)
+1. Build automatic login to the auth server
+1. Determine the dhcp server address (store as a variable?)
+1. Determine the dns server address (store as a variable?)

@@ -1,0 +1,15 @@
+ldap_host: makeitlabs.local
+ldap_dc: dc=makeitlabs,dc=local
+ldap_password: MaktIt.1
+ldap_password_size: 22 # The length ldap_password
+ldap_automount_machine: nas.makeitlabs.local
+ldap_server: ldap://auth.makeitlabs.local
+ldap_g_suffix: ou=Groups
+ldap_u_suffix: ou=Users
+ldap_m_suffix: ou=Machines
+ldap_include_create_user_and_groups: True
+ldap_include_create_indexes: True
+ldap_include_create_autofs: True
+ldap_include_create_automount: True
+ldap_include_create_sudo: True
+ldap_include_create_sudo_master: True 

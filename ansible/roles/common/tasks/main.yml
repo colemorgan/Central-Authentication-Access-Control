@@ -1,0 +1,26 @@
+---
+# Common plays to be run against all nodes, everywhere.
+
+- name: Install ntp 
+  yum: name=ntp state=present
+  tags: ntp
+
+- name: Configure ntp file
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  tags: ntp
+  notify: restart ntp
+
+- name: Start the ntp service
+  service: name=ntpd state=started enabled=true
+  tags: ntp
+
+- name: test to see if selinux is running
+  command: getenforce
+  register: sestatus
+  changed_when: false
+
+- name: delete desktop packages (graphical interface)
+  command: tasksel remove desktop
+
+- name: delete laptop packages (battery, etc)
+  command: tasksel remove laptop
