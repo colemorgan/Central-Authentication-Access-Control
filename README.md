@@ -22,10 +22,15 @@ The auth server will run openLDAP.
 # Authentication Client
 
 ## Hardware
-Getting Started documentation: <http://arduino.cc/en/Guide/HomePage>
 
-The base Arduino being used is an Uno r3 - <http://store.arduino.cc/index.php?main_page=product_info&products_code=A000066>
-At this point, we would like to use a POE ethernet shield with a microSD reader (Arduino networking is expensive though).
+### Raspberry Pi
+* LDAP - periodic sycning of users
+* Syslog-ng - Logging of actions in the system |  [link](http://www.linuxjournal.com/content/creating-centralized-syslog-server)
+
+### RFID Reader
+
+[Amazon link](http://www.amazon.com/gp/product/B00D1MDHTU/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
+
 
 ## Software/Services
 The client has two primary operations
