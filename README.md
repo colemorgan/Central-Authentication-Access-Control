@@ -55,7 +55,8 @@ Blink Codes:
 
 ## Usage example:
 
-```import ldap
+```
+import ldap
 l = ldap.initialize('ldap://10.100.0.51:1390')
 l.search_s('ou=members,dc=makeitlabs,dc=com',ldap.SCOPE_SUBTREE,'(cn=Jesse*)',['cn','mail'])
 [('cn=Jesse OBrien,ou=members,dc=makeitlabs,dc=com', {'cn': ['Jesse OBrien']})]
