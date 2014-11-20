@@ -1,0 +1,20 @@
+schema
+
+the schema for the info we need for a doorbot has to have just 3 things:  A name for logging (and/or possibly a user ID?), the RFID UID, and maybe an expiration date. 
+
+Example of 
+
+| Attribute             | Notes                        |  Mandatory |
+|-----------------------|------------------------------|------------|
+| objectClass           |inetOrgPerson examplePerson   | Y          |
+| uniqueIdentifier      |jobrien                       | Y          |
+| cn                    |Jesse Butler OBrien           | Y          |
+| sn                    |Surname                       | Y          |
+| gn                    |Given Name(s)                 | N          |
+| personalTitle         |Mr                            | N          |
+| displayName           |Jesse OBrien                  | Y          |
+| title                 |Member                        | N          |
+| jpegPhoto             |                              | N          |
+| mail                  |jesse.obrien@makeitlabs.com   | N          |
+| mobile                |Mobile phone number           | N          |
+| rfidTag               |RFID TAG #                    | N          |

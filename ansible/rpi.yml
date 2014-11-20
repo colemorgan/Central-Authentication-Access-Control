@@ -9,20 +9,19 @@
     - common
 
 - name: configure and deploy the webservers and application code
-  hosts: webservers
+  hosts: webpi
   remote_user: pi
 
   roles:
     - webpi
 
 - name: deploy MySQL and configure the databases
-  hosts: dbservers
+  hosts: dbpi
   remote_user: pi
 
   roles:
     - db
-
-
+- name:
 - name: ldap | Store previous run data
   file: path=$ldap_done_dir state=directory owner=pi group=pi
   tags: 
