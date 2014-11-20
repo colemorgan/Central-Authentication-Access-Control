@@ -53,7 +53,8 @@ Blink Codes:
 * Four fast blinks - User not found
 * Five fast blinks - File not found
 
-Usage example:
+## Usage example: ## 
+
 ```import ldap
 l = ldap.initialize('ldap://10.100.0.51:1390')
 l.search_s('ou=members,dc=makeitlabs,dc=com',ldap.SCOPE_SUBTREE,'(cn=Jesse*)',['cn','mail'])
